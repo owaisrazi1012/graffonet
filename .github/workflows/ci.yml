@@ -33,14 +33,9 @@ jobs:
           
           files_list=$(find . -path ./grafonnet-lib -prune -o -name '*.jsonnet')
           
-                
           echo "Creating directory"
           mkdir grafonnet
           ls
-          echo "Cloning directory"
-          git clone https://github.com/grafana/grafonnet-lib.git
-          
-         
           
           while IFS= read -r jsonnet_file;
           do
