@@ -54,11 +54,8 @@ jobs:
           
       - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
         with:
-          add: 'version.txt'
-          commit: --message "updating version"
-          author_name: Owais Raziuddin
-          committer_name: Owais Raziuddin
-          committer_email: Orazi1012@github.com
+          message: 'updating version'
+          add: 'version.txt --force'
           
           
           
