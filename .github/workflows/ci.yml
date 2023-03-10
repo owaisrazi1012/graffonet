@@ -56,6 +56,9 @@ jobs:
         with:
           add: 'version.txt'
           commit: --message "updating version"
+          author_name: Owais Raziuddin
+          committer_name: Owais Raziuddin
+          committer_email: Orazi1012@github.com
           
           
           
