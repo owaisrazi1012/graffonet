@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Starting script for deploying to Jfrog"
           
-          files_list=$(find . -path ./grafonnet-lib -prune -o -name '*.jsonnet')
+          files_list=$(find . -type f -name "*.jsonnet" ! -path "./grafonnet-lib/*")
           
           echo "Creating directory"
           mkdir grafonnet
