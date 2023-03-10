@@ -1,0 +1,58 @@
+name: CI for JFROG JSON
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: Setup Jsonnet on machine
+        run:  |
+          sudo apt-get update &&
+          sudo apt install jsonnet
+          jsonnet -v
+             
+       
+      - name: Deploying artifactory
+        run: |
+          echo "Starting script for deploying to Jfrog"
+          
+          files_list=$(find . -path ./grafonnet-lib -prune -o -name '*.jsonnet')
+          
+                
+          echo "Creating directory"
+          mkdir grafonnet
+          ls
+          echo "Cloning directory"
+          git clone https://github.com/grafana/grafonnet-lib.git
+          
+         
+          
+          while IFS= read -r jsonnet_file;
+          do
+          echo $jsonnet_file
+          filename=$(basename -- "$jsonnet_file")
+          filename="${filename%.*}"
+          echo $filename
+          JSONNET_PATH=grafonnet-lib \
+          jsonnet $jsonnet_file > grafonnet/$filename.json
+          done <<< "$files_list"
+          tar -cvzf grafonnet.tar.gz grafonnet/
+          version=$(cat version.txt)
+          echo $version + 0.1 | bc > version.txt
+          version=$(cat version.txt)
+          curl -u ${{ secrets.JFROG_USER }} -T grafonnet.tar.gz "https://grafanaascode.jfrog.io/artifactory/temp123-generic/grafonnet/$version/grafonnet.tar.gz"
