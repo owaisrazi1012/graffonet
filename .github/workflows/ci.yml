@@ -51,3 +51,12 @@ jobs:
           echo $version + 0.1 | bc > version.txt
           version=$(cat version.txt)
           curl -u ${{ secrets.JFROG_USER }} -T grafonnet.tar.gz "https://grafanaascode.jfrog.io/artifactory/temp123-generic/grafonnet/$version/grafonnet.tar.gz"
+          
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          add: 'version.txt'
+          commit: --message "updating version"
+          
+          
+          
+          
