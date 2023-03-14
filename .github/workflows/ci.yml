@@ -62,6 +62,7 @@ jobs:
           mkdir Downloads
           cd Downloads
           curl -u ${{ secrets.JFROG_USER }} -X GET https://grafanaascode.jfrog.io/artifactory/temp123-generic/grafonnet/$version -H 'Content-Type:application/json' -o grafonnet.tar.gz
+          ls
           tar -xf grafonnet.tar.gz
           ls
           
